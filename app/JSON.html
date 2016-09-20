@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script type="text/javascript" src="vis/dist/vis.js"></script>
+  <link href="vis/dist/vis.css" rel="stylesheet" type="text/css"/>
+
+  <style type="text/css">
+    #mynetwork {
+      width: 600px;
+      height: 400px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+<div id="mynetwork"></div>  <!--This is all the HTML needed-->
+
+<script type="text/javascript">
+
+  var container = document.getElementById('mynetwork')
+  var nodes = new vis.DataSet();
+  var edges = new vis.DataSet();
+  var gephiImported;
+  var nodeContent = document.getElementById('nodeContent');
+  var text = '{"edges":[{"source":"9","target":"4","id":"4","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"4","target":"1","id":"6","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"5","target":"12","id":"10","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"2","target":"5","id":"8","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"3","target":"7","id":"3","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"1","target":"3","id":"1","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"8","target":"3","id":"2","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"5","target":"11","id":"9","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"6","target":"2","id":"11","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"6","target":"14","id":"13","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"0","target":"2","id":"7","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"10","target":"4","id":"5","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"3","target":"8","id":"14","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"6","target":"13","id":"12","attributes":{},"color":"rgb(0,0,0)","size":1.0},{"source":"0","target":"1","id":"0","attributes":{},"color":"rgb(0,0,0)","size":1.0}],"nodes":[{"label":"leaf","x":451.09375,"y":244.5373077392578,"id":"14","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"Root","x":-117.07776641845703,"y":974.705078125,"id":"0","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":-554.3976440429688,"y":478.7420654296875,"id":"3","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":-20.660781860351562,"y":461.5211181640625,"id":"5","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":-265.1466979980469,"y":258.3140563964844,"id":"10","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":-296.13787841796875,"y":475.2978820800781,"id":"4","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":13.77385425567627,"y":244.5373077392578,"id":"12","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":268.59014892578125,"y":244.5373077392578,"id":"13","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":-92.97351837158203,"y":254.869873046875,"id":"11","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":344.34637451171875,"y":451.1885681152344,"id":"6","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":-612.9365234375,"y":272.0908203125,"id":"7","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":-740.3446655273438,"y":258.3140563964844,"id":"8","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"label":"leaf","x":-365.00714111328125,"y":251.42568969726562,"id":"9","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":-275.4770812988281,"y":764.609619140625,"id":"1","attributes":{},"color":"rgb(153,153,153)","size":10.0},{"x":20.660781860351562,"y":754.2770385742188,"id":"2","attributes":{},"color":"rgb(153,153,153)","size":10.0}]}'
+  // load the JSON file containing the Gephi network.
+  var gephiJSON = JSON.parse(text); // code in importing_from_gephi.
+
+  // you can customize the result like with these options. These are explained below.
+  // These are the default options.
+  var parserOptions = {
+    edges: {
+      inheritColors: false
+    },
+    nodes: {
+      fixed: true,
+      parseColor: false
+    }
+  };
+  var options = {
+    nodes: {
+      shape: 'dot',
+      font: {
+        face: 'Tahoma'
+      }
+    },
+    edges: {
+      width: 0.15,
+      smooth: {
+        type: 'continuous'
+      }
+    },
+    interaction: {
+      tooltipDelay: 200,
+      hideEdgesOnDrag: true
+    },
+    physics: {
+      stabilization: false,
+      barnesHut: {
+        gravitationalConstant: -10000,
+        springConstant: 0.002,
+        springLength: 150
+      }
+    }
+  }
+  // parse the gephi file to receive an object
+  // containing nodes and edges in vis format.
+  var parsed = vis.network.convertGephi(gephiJSON, parserOptions);
+
+  // provide data in the normal fashion
+  var data = {
+    nodes: parsed.nodes,
+    edged: parsed.edges
+  };
+
+  // create a network
+  var network = new vis.Network(container, data);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <script type="text/javascript" src="vis/dist/vis.js"></script>
+  <link href="vis/dist/vis.css" rel="stylesheet" type="text/css"/>
+
+  <style type="text/css">
+    #mynetwork {
+      width: 600px;
+      height: 400px;
+      border: 1px solid lightgray;
+    }
+  </style>
+</head>
+<body>
+<div id="mynetwork"></div>  <!--This is all the HTML needed-->
+
+<script type="text/javascript">
+  // create an array with nodes for simple graph creation
+  //fixed for traversal example
+  var nodes = new vis.DataSet([
+    {id: 1, label: 'Brussels', x: '100', y: '100', color: "blue"},
+    {id: 2, label: 'Amsterdam', x: '-200', y: '100', color: "blue"},
+    {id: 3, label: 'Berlin', x: '-100', y: '-100', color: "blue"},
+    {id: 4, label: 'Paris', x: '0', y: '-100', color: "blue"},
+    {id: 5, label: 'Munich', x: '-100', y: '0', color: "blue"},
+    {id: 6, label: 'Milan', x: '-150', y: '-200', color: "blue"},
+    {id: 7, label: 'Venice', x: '150', y: '-190', color: "blue"}
+  ]);
+
+  // create an array with edges
+  var edges = new vis.DataSet([
+    {from: 3, to: 4},
+    {from: 3, to: 6},
+    {from: 7, to: 6},
+    {from: 4, to: 7},
+    {from: 1, to: 4},
+    {from: 3, to: 4},
+    {from: 3, to: 2},
+    {from: 5, to: 1},
+    {from: 2, to: 5},
+    {from: 4, to: 5}
+  ]);
+
+  // create a network
+  var container = document.getElementById('mynetwork');
+
+  // provide the data in the vis format
+  var data = {
+    nodes: nodes,
+    edges: edges
+  };
+
+  var options = {
+
+
+      //added nodes have following style, overwritten
+    nodes: {
+
+      fixed: true,
+
+
+      font: {
+        color: "white",
+        align: 'center'
+
+      },
+        borderWidth: 2,
+        borderWidthSelected: 2
+      }
+
+
+  };
+
+
+  // initialize your network!
+  var network = new vis.Network(container, data, options);
+
+  //including these methods is not necessary. Adding to this method adds functionality related to the event.
+  network.on("click", function (params) {
+    params.event = "[original event]";
+    var nodeID = params['nodes']['0'];
+    //if a node was clicked
+    if (nodeID) {
+      //put that node into a variable
+      var clickedNode = nodes.get(nodeID);
+
+      if(clickedNode.color.background != "blue"){ //if it's not blue
+        clickedNode.color = {
+          border: "green",
+          background: 'blue',
+          highlight: {
+            background: 'blue',
+            border: 'black'
+          }
+
+
+        }
+
+
+      }else{
+        clickedNode.color = {
+          border: "green",
+          background: 'red',
+          highlight: {
+            background: 'red',
+            border: 'green'
+          }
+
+        }
+
+      }
+
+      nodes.update(clickedNode);
+    }
+  });
+
+
+
+
+
+  network.on("dragging", function (params) {
+    params.event = "[original event]";
+    // re-arrange
+  });
+
+
+</script>
+</body>
+</html>
