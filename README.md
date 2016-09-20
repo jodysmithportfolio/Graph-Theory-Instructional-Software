@@ -1,5 +1,5 @@
 # Work In Progress
-# Currently only works in localhost, tested using Webstorm IDE
+## Currently only works in localhost, tested using Webstorm IDE
 ##Instructions:
 - Open "app", open "RedBlack.html" and you will see a red-black tree example, but also with the full suite of Vis.js manipulation and configuration tools available to you. You may click a node to turn it from red to black. This can be used to demonstrate R-B trees to students, and the suite of Vis.js tools allow you to create new graphs right the web-app.
 
